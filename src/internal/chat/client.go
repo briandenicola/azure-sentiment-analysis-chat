@@ -3,9 +3,12 @@
 package chat
 
 import (
+	"encoding/json"
 	"bytes"
 	"time"
 	"log"
+	"strings"
+	"gopkg.in/resty.v1"
 	"github.com/gorilla/websocket"
 )
 
@@ -14,6 +17,9 @@ const (
 	pongWait = 60 * time.Second
 	pingPeriod = (pongWait * 9) / 10
 	maxMessageSize = 512
+	sentiment = `{"documents": [{"language":"en","id":"1", "text": "0" }]}`
+	sentimentThreshold = 0.01
+	warningMessage = "Please keep the converation nice..."
 )
 
 var (
@@ -26,11 +32,48 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-// Client is a middleman between the websocket connection and the hub.
+type chatMessage struct {
+	UserName string `json:"username"`
+	Message string `json:"message"`
+}
+
+type sentimentScore struct {
+	Id string 
+	Score float64 
+}
+type sentimentReply struct {
+	Documents []sentimentScore
+}
+
 type Client struct {
 	hub *Hub
 	conn *websocket.Conn
 	send chan []byte
+	cogsUrl string
+}
+
+func (c *Client) getSentiment( msg []byte ) (float64,error) {
+	
+	var cm chatMessage
+	err := json.Unmarshal(msg, &cm)
+	if err != nil {
+		log.Println(err)
+		return 0.00, err
+	}
+
+	req := strings.Replace(sentiment, "0", cm.Message, -1)
+	resp, err := resty.R().
+		SetHeader("Content-Type", "application/json").
+		SetBody([]byte(req)).
+		Post(c.cogsUrl)
+	
+	var sr sentimentReply 
+	err = json.Unmarshal(resp.Body(), &sr)
+	if err != nil {
+		log.Println(err)
+		return 0.00, err
+	}
+	return sr.Documents[0].Score, nil
 }
 
 func (c *Client) readMessages() {
@@ -53,6 +96,20 @@ func (c *Client) readMessages() {
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
 		c.hub.broadcast <- message
+
+		score,err := c.getSentiment(message)
+		if err != nil {
+			log.Printf("error: %v", err)
+		}
+
+		log.Printf("Sentiment Score - %f ", score)
+		if score < sentimentThreshold {
+			log.Println("Sentiment fell below threshold . . .")
+
+			nag := chatMessage{ UserName: "Adminstrator", Message: warningMessage }
+			buffer, _ := json.Marshal(&nag)
+			c.hub.broadcast <- buffer
+		}
 	} 	
 }
 

@@ -14,6 +14,11 @@ func main() {
 		port = os.Getenv("GOPORT")
 	} 
 
+	cogsUrl := "http://cogs:5000/text/analytics/v2.0/sentiment"
+	if os.Getenv("COGSURL") != ""  {
+		os.Getenv("COGSURL")
+	}
+
 	c := chat.NewChatServer()
-	c.InitHttpServer(port)
+	c.InitHttpServer(port, cogsUrl)
 }

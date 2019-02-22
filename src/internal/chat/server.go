@@ -12,21 +12,21 @@ func (h *HttpServer) optionsHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)
 }
 
-func (h *HttpServer) handleConnections(hub *Hub, w http.ResponseWriter, r *http.Request) {
+func (h *HttpServer) handleConnections(hub *Hub, cogs string, w http.ResponseWriter, r *http.Request) {
 
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256)}
+	client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256), cogsUrl: cogs}
 	client.hub.register <- client
 
 	go client.readMessages()
 	go client.writeMessages()
 }
 
-func (h *HttpServer) InitHttpServer(port string) {
+func (h *HttpServer) InitHttpServer(port string, cogs string) {
 
 	hub := newHub()
 	go hub.run()
@@ -34,7 +34,7 @@ func (h *HttpServer) InitHttpServer(port string) {
 	router := http.NewServeMux()
 	router.Handle("/", http.FileServer(http.Dir("../public"))) 
 	router.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		h.handleConnections(hub, w, r)
+		h.handleConnections(hub, cogs, w, r)
 	}) 
 
 	server := cors.Default().Handler(router)
