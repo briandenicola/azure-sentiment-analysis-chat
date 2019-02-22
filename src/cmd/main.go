@@ -14,6 +14,6 @@ func main() {
 		port = os.Getenv("GOPORT")
 	} 
 
-	c := chat.NewChatHandler()
+	c := chat.NewChatServer()
 	c.InitHttpServer(port)
 }
