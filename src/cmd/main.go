@@ -16,7 +16,7 @@ func main() {
 
 	cogsUrl := "http://cogs:5000/text/analytics/v2.0/sentiment"
 	if os.Getenv("COGSURL") != ""  {
-		os.Getenv("COGSURL")
+		cogsUrl = os.Getenv("COGSURL")
 	}
 
 	c := chat.NewChatServer()

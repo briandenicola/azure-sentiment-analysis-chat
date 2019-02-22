@@ -57,7 +57,7 @@ func (c *Client) getSentiment( msg []byte ) (float64,error) {
 	var cm chatMessage
 	err := json.Unmarshal(msg, &cm)
 	if err != nil {
-		log.Println(err)
+		log.Printf("Error unmarshalling of chat message - %v", err)
 		return 0.00, err
 	}
 
@@ -70,7 +70,7 @@ func (c *Client) getSentiment( msg []byte ) (float64,error) {
 	var sr sentimentReply 
 	err = json.Unmarshal(resp.Body(), &sr)
 	if err != nil {
-		log.Println(err)
+		log.Printf("Error unmarshalling of sentiment reply - %v", err)
 		return 0.00, err
 	}
 	return sr.Documents[0].Score, nil
@@ -99,11 +99,11 @@ func (c *Client) readMessages() {
 
 		score,err := c.getSentiment(message)
 		if err != nil {
-			log.Printf("error: %v", err)
+			log.Printf("Sentiment Parse Error: %v", err)
 		}
 
 		log.Printf("Sentiment Score - %f ", score)
-		if score < sentimentThreshold {
+		if score > 0.00 && score < sentimentThreshold {
 			log.Println("Sentiment fell below threshold . . .")
 
 			nag := chatMessage{ UserName: "Adminstrator", Message: warningMessage }

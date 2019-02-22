@@ -1,0 +1,103 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: websocketchatwithsentiment
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: websocketchat
+        lang: golang
+    spec:
+      containers:
+      - name: chatws
+        image: bjd145/chatws:0.3.4
+        imagePullPolicy: Always
+        env:
+        - name: COGSURL
+          value: "http://acs:5000/text/analytics/v2.0/sentiment"
+        ports:
+        - containerPort: 8081
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: websocketchatsvc
+  labels:
+    version: "1.0"
+spec:
+  selector:
+    app: websocketchat
+  ports:
+  - port: 80
+    targetPort: 8081
+  type: LoadBalancer
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: azuresentimentanalysis
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: azuresentimentanalysis
+    spec:
+      containers:
+      - name: azuresentimentanalysis
+        image: mcr.microsoft.com/azure-cognitive-services/sentiment:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        env:
+        - name: Eula
+          value: "accept"
+        - name: Billing
+          value: "https://southcentralus.api.cognitive.microsoft.com/"
+        - name: ApiKey
+          value: "c34790d25d7....................................."
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "250m"
+          limits:
+            memory: "4Gi"
+            cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: acs
+  labels:
+    version: "1.0"
+spec:
+  selector:
+    app: azuresentimentanalysis
+  ports:
+  - port: 5000
+    targetPort: 5000
+  type: NodePort
