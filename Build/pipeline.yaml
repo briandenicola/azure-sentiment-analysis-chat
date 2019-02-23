@@ -30,3 +30,8 @@ steps:
   displayName: Build Container 
   env:
     pswd: $(dockerPassword)
+
+- task: PublishPipelineArtifact@0
+  inputs:
+    targetPath: Deploy
+    artifactName: $(Build.ArtifactStagingDirectory)
