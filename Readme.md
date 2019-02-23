@@ -22,7 +22,7 @@ This requires Azure Cognitive Services created in Azure for billing purposes but
 3. go get github.com/rs/cors
 4. go get gopkg.in/resty.v1
 5. cd src
-6. dockerbuild -t chatws .
+6. docker build -t chatws .
 
 # Deploy 
 1. Update the ApiKey in the deploy.yaml with the Key you obtained from Step 3 in the Azure Setup. 

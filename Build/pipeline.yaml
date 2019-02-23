@@ -1,0 +1,37 @@
+pool:
+    vmImage: 'Ubuntu 16.04'
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - Build/*
+    - Deploy/*
+
+variables:
+    dockerid:   'bjd145'
+    imageName:  'bjd145/chatws:$(Build.BuildId)'
+
+steps:
+- bash: |
+    export GOPATH=`pwd` 
+    go get github.com/gorilla/websocket
+    go get github.com/rs/cors
+    go get gopkg.in/resty.v1
+  displayName: Get golang dependencies 
+
+- bash: |
+    cd src
+    docker build -f Dockerfile -t $(imageName) .
+    echo $pswd | docker login -u $(dockerId) --password-stdin
+    docker push $(imageName)
+  displayName: Build Container 
+  env:
+    pswd: $(dockerPassword)
+
+
+- task: PublishPipelineArtifact@0
+  inputs:
+    targetPath: deploy
