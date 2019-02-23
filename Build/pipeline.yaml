@@ -24,14 +24,14 @@ steps:
 
 - bash: |
     cd src
-    docker build -f Dockerfile -t $(imageName) .
+    docker build -t $(imageName) .
     echo $pswd | docker login -u $(dockerId) --password-stdin
     docker push $(imageName)
   displayName: Build Container 
   env:
     pswd: $(dockerPassword)
 
-
 - task: PublishPipelineArtifact@0
   inputs:
-    targetPath: deploy
+    targetPath: Deploy
+    artifactName: $(Build.ArtifactStagingDirectory)
