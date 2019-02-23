@@ -80,7 +80,7 @@ spec:
         - name: ApiKey
           valueFrom:
             configMapKeyRef:
-              name: chatMap
+              name: chatsvcmap
               key: cogsApiKey      
         resources:
           requests:
