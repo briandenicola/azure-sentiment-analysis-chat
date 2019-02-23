@@ -34,4 +34,3 @@ steps:
 - task: PublishPipelineArtifact@0
   inputs:
     targetPath: Deploy
-    artifactName: $(Build.ArtifactStagingDirectory)
