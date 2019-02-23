@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: websocketchatwithsentiment
 spec:
+  paused: true
   replicas: 1
   strategy:
     type: RollingUpdate
