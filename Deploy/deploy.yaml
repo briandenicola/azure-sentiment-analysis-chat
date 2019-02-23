@@ -78,7 +78,10 @@ spec:
         - name: Billing
           value: "https://southcentralus.api.cognitive.microsoft.com/"
         - name: ApiKey
-          value: "c34790d25d7....................................."
+          valueFrom:
+            configMapKeyRef:
+              name: chatMap
+              key: cogsApiKey      
         resources:
           requests:
             memory: "1Gi"
