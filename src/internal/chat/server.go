@@ -1,20 +1,20 @@
 package chat
 import (
+	"github.com/gin-gonic/gin"
 	"net/http"
-	"fmt"
 	"log"
-	"github.com/rs/cors"
 )
 
 type HttpServer struct {}
 
-func (h *HttpServer) optionsHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(200)
+func (h *HttpServer) optionsHandler(c *gin.Context) {
+	c.String(http.StatusOK, "")
 }
 
-func (h *HttpServer) handleConnections(hub *Hub, cogs string, w http.ResponseWriter, r *http.Request) {
+//func (h *HttpServer) handleConnections(hub *Hub, cogs string, w http.ResponseWriter, r *http.Request) {
+func (h *HttpServer) handleConnections(hub *Hub, cogs string, c *gin.Context) {
 
-	conn, err := upgrader.Upgrade(w, r, nil)
+	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Println(err)
 		return
@@ -31,15 +31,17 @@ func (h *HttpServer) InitHttpServer(port string, cogs string) {
 	hub := newHub()
 	go hub.run()
 
-	router := http.NewServeMux()
-	router.Handle("/", http.FileServer(http.Dir("../public"))) 
-	router.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		h.handleConnections(hub, cogs, w, r)
-	}) 
+	gin.SetMode(gin.ReleaseMode)
+	router := gin.Default()
 
-	server := cors.Default().Handler(router)
-	fmt.Print("Listening on ", port)
-	log.Fatal(http.ListenAndServe( port , server))
+	router.GET("/ws", func(c *gin.Context) {
+		h.handleConnections(hub, cogs, c)
+	})
+	router.StaticFS("/index.html", http.Dir("../public"))
+	router.OPTIONS("/", h.optionsHandler)
+
+	log.Println("Server listener started on %s", port)
+	router.Run(port) 	
 }
 
 func NewChatServer() *HttpServer {

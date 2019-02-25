@@ -18,7 +18,7 @@ steps:
 - bash: |
     export GOPATH=`pwd` 
     go get github.com/gorilla/websocket
-    go get github.com/rs/cors
+    go get github.com/gin-gonic/gin
     go get gopkg.in/resty.v1
   displayName: Get golang dependencies 
 
