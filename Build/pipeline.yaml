@@ -19,7 +19,9 @@ steps:
     export GOPATH=`pwd` 
     go get github.com/gorilla/websocket
     go get github.com/gin-gonic/gin
+    go get github.com/gin-gonic/contrib/static
     go get gopkg.in/resty.v1
+  
   displayName: Get golang dependencies 
 
 - bash: |

@@ -10,3 +10,8 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+#Ignore module directories
+src/golang.org/*
+src/gopkg.in/*
+src/github.com/*

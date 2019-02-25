@@ -1,6 +1,7 @@
 package chat
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/contrib/static"
 	"net/http"
 	"log"
 )
@@ -37,7 +38,9 @@ func (h *HttpServer) InitHttpServer(port string, cogs string) {
 	router.GET("/ws", func(c *gin.Context) {
 		h.handleConnections(hub, cogs, c)
 	})
-	router.StaticFS("/index.html", http.Dir("../public"))
+	
+	//router.StaticFS("/", http.Dir("../public"))
+	router.Use(static.Serve("/", static.LocalFile("../public", true)))
 	router.OPTIONS("/", h.optionsHandler)
 
 	log.Println("Server listener started on %s", port)
