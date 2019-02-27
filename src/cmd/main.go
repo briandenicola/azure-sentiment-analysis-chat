@@ -6,19 +6,20 @@ import (
 	"internal/chat"
 )
 
+//Variables 
+var	port    = ":8081"
+var cogsUrl = "http://cogs:5000/text/analytics/v2.0/sentiment"
+
 func main() {
 	log.Print("Starting Server . . ")
 
-	port := ":8081"
 	if os.Getenv("GOPORT") != "" {
 		port = os.Getenv("GOPORT")
 	} 
-
-	cogsUrl := "http://cogs:5000/text/analytics/v2.0/sentiment"
 	if os.Getenv("COGSURL") != ""  {
 		cogsUrl = os.Getenv("COGSURL")
 	}
 
-	c := chat.NewChatServer()
-	c.InitHttpServer(port, cogsUrl)
+	c := chat.CreateServer(port, cogsUrl)
+	c.RunServer()
 }
