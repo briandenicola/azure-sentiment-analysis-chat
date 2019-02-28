@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: websocketchatwithsentiment
 spec:
-  paused: true
   replicas: {{ .Values.chat_replicas }} 
   strategy:
     type: RollingUpdate
