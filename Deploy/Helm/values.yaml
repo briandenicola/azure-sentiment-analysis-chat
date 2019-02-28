@@ -1,0 +1,7 @@
+chat_image: bjd145/chatws
+chat_image_version: 0.3.4
+chat_replicas: 1 
+
+sentimentapi_uri: http://acs:5000/text/analytics/v2.0/sentiment
+sentimentapi_key: ''
+sentimentapi_billing_uri: "https://southcentralus.api.cognitive.microsoft.com/"

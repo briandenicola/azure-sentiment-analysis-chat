@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: websocketchatsvc
+  labels:
+    version: "1.0"
+spec:
+  selector:
+    app: websocketchat
+  ports:
+  - port: 80
+    targetPort: 8081
+  type: LoadBalancer
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: acs
+  labels:
+    version: "1.0"
+spec:
+  selector:
+    app: azuresentimentanalysis
+  ports:
+  - port: 5000
+    targetPort: 5000
+  type: NodePort
