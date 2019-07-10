@@ -73,7 +73,7 @@ stages:
                 azureResourceGroup: 'DevSub02_K8S_RG'
                 kubernetesCluster: bjdk8s
                 command: upgrade
-                chartName: '$(System.ArtifactsDirectory)/drop/Helm'
+                chartName: '$(System.ArtifactsDirectory)/Helm'
                 releaseName: 'sentiment-chat'
                 overrideValues: 'sentimentapi_key=$(cogsApiKey),chat_image_version=$(Build.BuildId) '
-                valueFile: '$(System.ArtifactsDirectory)/drop/Helm/values.yaml'
+                valueFile: '$(System.ArtifactsDirectory)/Helm/values.yaml'
