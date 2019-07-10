@@ -11,6 +11,7 @@ variables:
     dockerid:   'bjd145'
     imageName:  'bjd145/chatws:$(Build.BuildId)'
     cogsApiKey: '$(cogsApiKey)'
+    pswd: $(dockerPassword)
 
 stages:
 - stage: build
@@ -40,9 +41,6 @@ stages:
 
     - task: PublishBuildArtifacts@1
    
-    env:
-      pswd: $(dockerPassword)
-
 - stage: deploy
   jobs:
   - deployment: 'Deploy To AKS'
