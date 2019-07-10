@@ -50,10 +50,9 @@ stages:
       runOnce:
         deploy:
           steps:
-            - task: DownloadPipelineArtifact@1
+            - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current'
-                artifactName: 'drop'
                 targetPath: '$(System.ArtifactsDirectory)/drop'
 
             - task: HelmInstaller@0
