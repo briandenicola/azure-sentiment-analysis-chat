@@ -53,7 +53,6 @@ stages:
             - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current'
-                targetPath: '$(System.ArtifactsDirectory)/drop'
 
             - task: HelmInstaller@0
               displayName: 'Install Helm 2.9.1'
