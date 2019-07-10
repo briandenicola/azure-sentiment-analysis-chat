@@ -11,7 +11,6 @@ variables:
     dockerid:   'bjd145'
     imageName:  'bjd145/chatws:$(Build.BuildId)'
     cogsApiKey: '$(cogsApiKey)'
-    pswd: $(dockerPassword)
 
 stages:
 - stage: build
@@ -31,7 +30,7 @@ stages:
     - bash: |
         cd src
         docker build -t $(imageName) .
-        echo $pswd | docker login -u $(dockerId) --password-stdin
+        echo $(dockerPassword) | docker login -u $(dockerId) --password-stdin
         docker push $(imageName)
 
     - task: CopyFiles@2
