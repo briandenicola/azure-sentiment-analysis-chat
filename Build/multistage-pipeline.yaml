@@ -1,0 +1,88 @@
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - Build/*
+    - Deploy/*
+
+variables:
+    dockerid:   'bjd145'
+    imageName:  'bjd145/chatws:$(Build.BuildId)'
+    cogsApiKey: '$(cogsApiKey)'
+
+stages:
+- stage: build
+  jobs: 
+  - job: 'Build And Push'
+    pool:
+      vmImage: 'Ubuntu 16.04'
+    steps:
+    - displayName: Get golang dependencies 
+      bash: |
+        export GOPATH=`pwd` 
+        go get github.com/gorilla/websocket
+        go get github.com/gin-contrib/cors
+        go get github.com/gin-gonic/gin
+        go get github.com/gin-gonic/contrib/static
+        go get gopkg.in/resty.v1
+      
+    - displayName: Build Container 
+      bash: |
+        cd src
+        docker build -t $(imageName) .
+        echo $pswd | docker login -u $(dockerId) --password-stdin
+        docker push $(imageName)
+
+    - displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+      task: CopyFiles@2
+      inputs:
+        SourceFolder: Deploy
+        TargetFolder: '$(build.artifactstagingdirectory)'
+
+    - displayName: 'Publish Artifact: drop'
+      task: PublishBuildArtifacts@1
+   
+    env:
+      pswd: $(dockerPassword)
+
+- stage: deploy
+  jobs:
+  - deployment: 'Deploy To AKS'
+    pool:
+      vmImage: 'Ubuntu 16.04'
+    environment: 'AKS'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: DownloadPipelineArtifact@1
+              inputs:
+                buildType: 'current'
+                artifactName: 'Deploy'
+                targetPath: '$(System.ArtifactsDirectory)/deploy'
+
+            - task: HelmInstaller@0
+              displayName: 'Install Helm 2.9.1'
+
+            - task: HelmDeploy@0
+              displayName: 'helm init'
+              inputs:
+                azureSubscription: 'BJD_APP02_Subscription (bfafbd89-a2a3-43a5-af72-fb4ef0c514c1)'
+                azureResourceGroup: 'DevSub02_K8S_RG'
+                kubernetesCluster: bjdk8s
+                command: init
+                arguments: ' --service-account tiller'
+
+            - task: HelmDeploy@0
+              displayName: 'helm upgrade'
+              inputs:
+                azureSubscription: 'BJD_APP02_Subscription (bfafbd89-a2a3-43a5-af72-fb4ef0c514c1)'
+                azureResourceGroup: 'DevSub02_K8S_RG'
+                kubernetesCluster: bjdk8s
+                command: upgrade
+                chartName: '$(System.ArtifactsDirectory)/deploy/Helm'
+                releaseName: 'sentiment-chat'
+                overrideValues: 'sentimentapi_key=$(cogsApiKey),chat_image_version=$(Build.BuildId) '
+                valueFile: '$(System.ArtifactsDirectory)/deploy/Helm/values.yaml'
