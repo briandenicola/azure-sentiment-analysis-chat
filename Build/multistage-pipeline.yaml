@@ -16,7 +16,7 @@ variables:
 stages:
 - stage: build
   jobs: 
-  - job: 'Build And Push'
+  - job: 'Build_And_Push'
     pool:
       vmImage: 'Ubuntu 16.04'
     steps:
@@ -43,7 +43,7 @@ stages:
    
 - stage: deploy
   jobs:
-  - deployment: 'Deploy To AKS'
+  - deployment: 'Deploy_To_AKS'
     pool:
       vmImage: 'Ubuntu 16.04'
     environment: 'AKS'
