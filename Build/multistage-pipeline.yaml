@@ -54,7 +54,7 @@ stages:
               inputs:
                 buildType: 'current'
                 artifactName: 'drop'
-                targetPath: '$(System.ArtifactsDirectory)/deploy'
+                targetPath: '$(System.ArtifactsDirectory)/drop'
 
             - task: HelmInstaller@0
               displayName: 'Install Helm 2.9.1'
@@ -75,7 +75,7 @@ stages:
                 azureResourceGroup: 'DevSub02_K8S_RG'
                 kubernetesCluster: bjdk8s
                 command: upgrade
-                chartName: '$(System.ArtifactsDirectory)/deploy/Helm'
+                chartName: '$(System.ArtifactsDirectory)/drop/Helm'
                 releaseName: 'sentiment-chat'
                 overrideValues: 'sentimentapi_key=$(cogsApiKey),chat_image_version=$(Build.BuildId) '
-                valueFile: '$(System.ArtifactsDirectory)/deploy/Helm/values.yaml'
+                valueFile: '$(System.ArtifactsDirectory)/drop/Helm/values.yaml'
