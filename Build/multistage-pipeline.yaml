@@ -61,7 +61,7 @@ stages:
             - task: HelmDeploy@0
               displayName: 'helm init'
               inputs:
-                azureSubscription: 'BJD_APP02_Subscription (bfafbd89-a2a3-43a5-af72-fb4ef0c514c1)'
+                azureSubscription: 'BJD_APP02_Subscription'
                 azureResourceGroup: 'DevSub02_K8S_RG'
                 kubernetesCluster: bjdk8s
                 command: init
@@ -70,7 +70,7 @@ stages:
             - task: HelmDeploy@0
               displayName: 'helm upgrade'
               inputs:
-                azureSubscription: 'BJD_APP02_Subscription (bfafbd89-a2a3-43a5-af72-fb4ef0c514c1)'
+                azureSubscription: 'BJD_APP02_Subscription'
                 azureResourceGroup: 'DevSub02_K8S_RG'
                 kubernetesCluster: bjdk8s
                 command: upgrade
