@@ -19,8 +19,7 @@ stages:
     pool:
       vmImage: 'Ubuntu 16.04'
     steps:
-    - displayName: Get golang dependencies 
-      bash: |
+    - bash: |
         export GOPATH=`pwd` 
         go get github.com/gorilla/websocket
         go get github.com/gin-contrib/cors
@@ -28,21 +27,18 @@ stages:
         go get github.com/gin-gonic/contrib/static
         go get gopkg.in/resty.v1
       
-    - displayName: Build Container 
-      bash: |
+    - bash: |
         cd src
         docker build -t $(imageName) .
         echo $pswd | docker login -u $(dockerId) --password-stdin
         docker push $(imageName)
 
-    - displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-      task: CopyFiles@2
+    - task: CopyFiles@2
       inputs:
         SourceFolder: Deploy
         TargetFolder: '$(build.artifactstagingdirectory)'
 
-    - displayName: 'Publish Artifact: drop'
-      task: PublishBuildArtifacts@1
+    - task: PublishBuildArtifacts@1
    
     env:
       pswd: $(dockerPassword)
