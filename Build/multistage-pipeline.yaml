@@ -78,3 +78,4 @@ stages:
                 releaseName: 'sentiment-chat'
                 overrideValues: 'sentimentapi_key=$(cogsApiKey),chat_image_version=$(Build.BuildId) '
                 valueFile: '$(System.ArtifactsDirectory)/drop/Helm/values.yaml'
+                arguments: --namespace chat
