@@ -44,7 +44,7 @@ stages:
   - deployment: 'Deploy_To_AKS'
     pool:
       vmImage: 'Ubuntu 16.04'
-    environment: 'AKS'
+    environment: 'AKS.chat'
     strategy:
       runOnce:
         deploy:
