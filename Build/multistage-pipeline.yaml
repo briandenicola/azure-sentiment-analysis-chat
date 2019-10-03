@@ -10,7 +10,6 @@ trigger:
 variables:
     dockerid:   'bjd145'
     imageName:  'bjd145/chatws:$(Build.BuildId)'
-    cogsApiKey: '$(cogsApiKey)'
 
 stages:
 - stage: build
