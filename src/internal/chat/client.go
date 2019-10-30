@@ -18,8 +18,8 @@ const (
 	pingPeriod = (pongWait * 9) / 10
 	maxMessageSize = 512
 	sentiment = `{"documents": [{"language":"en","id":"1", "text": "0" }]}`
-	sentimentThreshold = 0.01
-	warningMessage = "Please keep the converation nice..."
+	sentimentThreshold = 0.075
+	warningMessage = "Language!"
 )
 
 var (
