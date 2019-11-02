@@ -61,8 +61,8 @@ stages:
               displayName: 'helm init'
               inputs:
                 azureSubscription: 'BJD_APP02_Subscription'
-                azureResourceGroup: 'DevSub02_K8S_RG'
-                kubernetesCluster: bjdk8s
+                azureResourceGroup: 'DevSub02_K8S01_RG'
+                kubernetesCluster: bjdk8s01
                 command: init
                 arguments: ' --service-account tiller'
 
@@ -70,8 +70,8 @@ stages:
               displayName: 'helm upgrade'
               inputs:
                 azureSubscription: 'BJD_APP02_Subscription'
-                azureResourceGroup: 'DevSub02_K8S_RG'
-                kubernetesCluster: bjdk8s
+                azureResourceGroup: 'DevSub02_K8S01_RG'
+                kubernetesCluster: bjdk8s01
                 command: upgrade
                 chartName: '$(System.ArtifactsDirectory)/drop/Helm'
                 releaseName: 'sentiment-chat'
