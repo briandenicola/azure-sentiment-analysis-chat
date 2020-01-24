@@ -55,7 +55,7 @@ stages:
               inputs:
                 helmVersionToInstall: '2.15.2'
 
-            - task: HelmDeploy@1
+            - task: HelmDeploy@0
               displayName: 'helm init'
               inputs:
                 azureSubscription: 'BJD_APP02_Subscription'
@@ -64,7 +64,7 @@ stages:
                 command: init
                 arguments: ' --service-account tiller'
 
-            - task: HelmDeploy@1
+            - task: HelmDeploy@0
               displayName: 'helm upgrade'
               inputs:
                 azureSubscription: 'BJD_APP02_Subscription'
