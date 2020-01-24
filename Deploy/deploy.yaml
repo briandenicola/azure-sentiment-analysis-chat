@@ -77,7 +77,7 @@ spec:
         - name: Eula
           value: "accept"
         - name: Billing
-          value: "https://southcentralus.api.cognitive.microsoft.com/"
+          value: "https://centralus.api.cognitive.microsoft.com/"
         - name: ApiKey
           valueFrom:
             configMapKeyRef:
