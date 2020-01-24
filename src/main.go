@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 	"log"
-	"internal/chat"
+	"github.com/bjd145/go/chat"
 )
 
 //Variables 

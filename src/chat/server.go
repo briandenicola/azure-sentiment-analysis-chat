@@ -2,7 +2,6 @@ package chat
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/contrib/static"
 	"net/http"
 	"log"
 	"time"
@@ -54,7 +53,10 @@ func (h *ChatServer) RunServer()  {
 	router.GET("/healthz", func(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "i'm alive!"})
 	})
-	router.Use(static.Serve("/", static.LocalFile("../public", true)))
+
+	router.GET("/", func( c *gin.Context) {
+		http.FileServer(http.Dir("../public"))
+	})
 	router.OPTIONS("/", h.optionsHandler)
 
 	log.Printf("Server listener started on %s", h.port)
