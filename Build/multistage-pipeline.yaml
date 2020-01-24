@@ -51,18 +51,9 @@ stages:
                 targetPath: '$(System.ArtifactsDirectory)/'
 
             - task: HelmInstaller@0
-              displayName: 'Install Helm 2.15.2'
+              displayName: 'Install Helm 3.0.2'
               inputs:
-                helmVersionToInstall: '2.15.2'
-
-            - task: HelmDeploy@0
-              displayName: 'helm init'
-              inputs:
-                azureSubscription: 'BJD_APP02_Subscription'
-                azureResourceGroup: 'DevSub02_K8S01_RG'
-                kubernetesCluster: bjdk8s01
-                command: init
-                arguments: ' --service-account tiller'
+                helmVersionToInstall: '3.0.2'
 
             - task: HelmDeploy@0
               displayName: 'helm upgrade'
