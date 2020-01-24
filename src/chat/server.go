@@ -55,7 +55,7 @@ func (h *ChatServer) RunServer()  {
 		c.JSON(200, gin.H{"message": "i'm alive!"})
 	})
 
-	router.Use(static.Serve("/", static.LocalFile("./public", true)))
+	router.Use(static.Serve("/", static.LocalFile("../public", true)))
 	router.OPTIONS("/", h.optionsHandler)
 
 	log.Printf("Server listener started on %s", h.port)
