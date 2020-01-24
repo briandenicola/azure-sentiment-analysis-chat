@@ -55,22 +55,22 @@ stages:
               inputs:
                 helmVersionToInstall: '2.15.2'
 
-            - task: HelmDeploy@0
+            - task: HelmDeploy@1
               displayName: 'helm init'
               inputs:
                 azureSubscription: 'BJD_APP02_Subscription'
                 azureResourceGroup: 'DevSub02_K8S01_RG'
                 kubernetesCluster: bjdk8s01
-                command: init
+                subCommand: init
                 arguments: ' --service-account tiller'
 
-            - task: HelmDeploy@0
+            - task: HelmDeploy@1
               displayName: 'helm upgrade'
               inputs:
                 azureSubscription: 'BJD_APP02_Subscription'
                 azureResourceGroup: 'DevSub02_K8S01_RG'
                 kubernetesCluster: bjdk8s01
-                command: upgrade
+                subCommand: upgrade
                 chartName: '$(System.ArtifactsDirectory)/drop/Helm'
                 releaseName: 'sentiment-chat'
                 overrideValues: 'sentimentapi_key=$(cogsApiKey),chat_image_version=$(Build.BuildId) '
