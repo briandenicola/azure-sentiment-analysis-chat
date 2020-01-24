@@ -61,7 +61,7 @@ stages:
                 azureSubscription: 'BJD_APP02_Subscription'
                 azureResourceGroup: 'DevSub02_K8S01_RG'
                 kubernetesCluster: bjdk8s01
-                subCommand: init
+                command: init
                 arguments: ' --service-account tiller'
 
             - task: HelmDeploy@1
@@ -70,7 +70,7 @@ stages:
                 azureSubscription: 'BJD_APP02_Subscription'
                 azureResourceGroup: 'DevSub02_K8S01_RG'
                 kubernetesCluster: bjdk8s01
-                subCommand: upgrade
+                command: upgrade
                 chartName: '$(System.ArtifactsDirectory)/drop/Helm'
                 releaseName: 'sentiment-chat'
                 overrideValues: 'sentimentapi_key=$(cogsApiKey),chat_image_version=$(Build.BuildId) '
