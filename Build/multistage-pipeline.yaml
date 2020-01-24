@@ -18,27 +18,23 @@ stages:
     pool:
       vmImage: 'Ubuntu 16.04'
     steps:
-    - bash: |
-        export GOPATH=`pwd` 
-        go get github.com/gorilla/websocket
-        go get github.com/gin-contrib/cors
-        go get github.com/gin-gonic/gin
-        go get github.com/gin-gonic/contrib/static
-        go get gopkg.in/resty.v1
-      
+         
     - bash: |
         cd src
         docker build -t $(imageName) .
         echo $(dockerPassword) | docker login -u $(dockerId) --password-stdin
         docker push $(imageName)
+      displayName: Build and Push Container 
 
     - task: CopyFiles@2
       inputs:
         SourceFolder: Deploy
         TargetFolder: '$(build.artifactstagingdirectory)'
+      displayName: Copy Artifacts  
 
     - task: PublishBuildArtifacts@1
-   
+      displayName: Publish Build Artifacts 
+
 - stage: deploy
   jobs:
   - deployment: 'Deploy_To_AKS'
@@ -55,7 +51,9 @@ stages:
                 targetPath: '$(System.ArtifactsDirectory)/'
 
             - task: HelmInstaller@0
-              displayName: 'Install Helm 2.9.1'
+              displayName: 'Install Helm 2.15.2'
+              inputs:
+                helmVersionToInstall: '2.15.2'
 
             - task: HelmDeploy@0
               displayName: 'helm init'
