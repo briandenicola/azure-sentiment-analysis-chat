@@ -5,6 +5,9 @@ metadata:
   name: azuresentimentanalysis
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+        app: azuresentimentanalysis
   strategy:
     type: RollingUpdate
     rollingUpdate:

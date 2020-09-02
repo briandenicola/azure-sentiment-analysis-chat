@@ -3,6 +3,10 @@ kind: Deployment
 metadata:
   name: websocketchatwithsentiment
 spec:
+  selector:
+    matchLabels:
+        app: websocketchat
+        lang: golang
   replicas: {{ .Values.chat_replicas }} 
   strategy:
     type: RollingUpdate
