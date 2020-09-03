@@ -37,7 +37,7 @@ type chatMessage struct {
 
 type sentimentScore struct {
 	Id string 
-	Score float64 
+	Sentiment string
 }
 type sentimentReply struct {
 	Documents []sentimentScore
