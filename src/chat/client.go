@@ -16,7 +16,7 @@ const (
 	pingPeriod = (pongWait * 9) / 10
 	maxMessageSize = 512
 	sentiment = `{"documents": [{"language":"en","id":"1", "text": "0" }]}`
-	sentimentThreshold = 0.075
+	sentimentThreshold = "negative"
 	warningMessage = "Language!"
 )
 
@@ -71,7 +71,7 @@ func (c *Client) getSentiment( msg []byte ) (float64,error) {
 		log.Printf("Error unmarshalling of sentiment reply - %v", err)
 		return 0.00, err
 	}
-	return sr.Documents[0].Score, nil
+	return sr.Documents[0].sentiment, nil
 }
 
 func (c *Client) readMessages() {
@@ -100,8 +100,9 @@ func (c *Client) readMessages() {
 			log.Printf("Sentiment Parse Error: %v", err)
 		}
 
-		log.Printf("Sentiment Score - %f ", score)
-		if score > 0.00 && score < sentimentThreshold {
+		//log.Printf("Sentiment Score - %f ", score)
+		//if score > 0.00 && score < sentimentThreshold {
+		if score == sentimentThreshold {
 			log.Println("Sentiment fell below threshold . . .")
 
 			nag := chatMessage{ UserName: "Adminstrator", Message: warningMessage }
