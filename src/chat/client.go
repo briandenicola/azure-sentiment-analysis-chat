@@ -50,13 +50,13 @@ type Client struct {
 	cogsUrl string
 }
 
-func (c *Client) getSentiment( msg []byte ) (float64,error) {
+func (c *Client) getSentiment( msg []byte ) (string,error) {
 	
 	var cm chatMessage
 	err := json.Unmarshal(msg, &cm)
 	if err != nil {
 		log.Printf("Error unmarshalling of chat message - %v", err)
-		return 0.00, err
+		return "neutral", err
 	}
 
 	req := strings.Replace(sentiment, "0", cm.Message, -1)
@@ -69,9 +69,9 @@ func (c *Client) getSentiment( msg []byte ) (float64,error) {
 	err = json.Unmarshal(resp.Body(), &sr)
 	if err != nil {
 		log.Printf("Error unmarshalling of sentiment reply - %v", err)
-		return 0.00, err
+		return "neutral", err
 	}
-	return sr.Documents[0].sentiment, nil
+	return sr.Documents[0].Sentiment, nil
 }
 
 func (c *Client) readMessages() {
