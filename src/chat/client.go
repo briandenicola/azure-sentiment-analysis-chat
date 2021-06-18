@@ -6,7 +6,7 @@ import (
 	"time"
 	"log"
 	"strings"
-	"gopkg.in/resty.v1"
+	"github.com/go-resty/resty/v2"
 	"github.com/gorilla/websocket"
 )
 
@@ -54,13 +54,15 @@ func (c *Client) getSentiment( msg []byte ) (string,error) {
 	
 	var cm chatMessage
 	err := json.Unmarshal(msg, &cm)
+	
 	if err != nil {
 		log.Printf("Error unmarshalling of chat message - %v", err)
 		return "neutral", err
 	}
 
 	req := strings.Replace(sentiment, "0", cm.Message, -1)
-	resp, err := resty.R().
+	client := resty.New()
+	resp, err := client.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody([]byte(req)).
 		Post(c.cogsUrl)

@@ -1,8 +1,10 @@
-FROM golang:1.13 as builder
+FROM golang:1.16 as builder
 
 WORKDIR /src
 ENV GO111MODULE=on
 COPY . .
+RUN go clean --modcache
+RUN go mod tidy
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /main .
 
 FROM busybox
