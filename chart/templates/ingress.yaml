@@ -35,7 +35,7 @@ spec:
   http:
   - route:
     - destination:
-        host: websocketchat-svc
+        host: app-81e86b-svc
         port:
           number: 8081
   
