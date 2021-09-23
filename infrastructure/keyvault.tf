@@ -8,11 +8,6 @@ resource "azurerm_key_vault" "app" {
 
   sku_name = "standard"
 
-  network_acls {
-    bypass                    = "AzureServices"
-    default_action            = "Deny"
-  }
-
   access_policy {
     tenant_id = data.azurerm_client_config.current.tenant_id
     object_id = azurerm_user_assigned_identity.app_identity.principal_id 
@@ -68,24 +63,5 @@ resource "azurerm_key_vault" "app" {
       "recover",
       "restore"
     ]
-  }
-}
-
-resource "azurerm_private_endpoint" "key_vault" {
-  name                      = "${var.app_name}-kv-endpoint"
-  resource_group_name       = azurerm_resource_group.app.name
-  location                  = azurerm_resource_group.app.location
-  subnet_id                 = data.azurerm_subnet.private_endpoint_subnet.id
-
-  private_service_connection {
-    name                           = "kv-${var.app_name}-kv-endpoint"
-    private_connection_resource_id = azurerm_key_vault.app.id
-    subresource_names              = [ "vault" ]
-    is_manual_connection           = false
-  }
-
-  private_dns_zone_group {
-    name                          = data.azurerm_private_dns_zone.privatelink_vaultcore_azure_net.name
-    private_dns_zone_ids          = [ data.azurerm_private_dns_zone.privatelink_vaultcore_azure_net.id ]
   }
 }

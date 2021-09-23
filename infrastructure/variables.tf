@@ -14,15 +14,4 @@ variable "resource_group_name" {
 variable "environment" {
   description = "The environment this cluster is"
 }
-
-variable "app_vnet_resource_group_name" {
-  description = "The Resource Group name that contains the Vnet for Private Endpoints"
-}
-
-variable "app_vnet" {
-  description = "The vnet name where the Private Endpoints will be created"
-}
-
-variable "dns_resource_group_name" {
-  description = "The Resource Group name that contains Private DNS Zones"
-}
+==

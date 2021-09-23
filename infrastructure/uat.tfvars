@@ -1,5 +1,2 @@
 app_name = "app-81e86b"
 environment = "uat"
-app_vnet_resource_group_name = "DevSub02_Network_RG"
-app_vnet = "DevSub02-Vnet-Sandbox-001"
-dns_resource_group_name = "DevSub02_DNS_RG"
