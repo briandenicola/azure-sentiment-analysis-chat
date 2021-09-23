@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     name: Create Application infrastructure
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
         ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
