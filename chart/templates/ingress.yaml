@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ print .Values.hostname "-gw" | replace "." "-" }}
+spec:
+  selector:
+    istio: ingressgateway 
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - {{ .Values.hostname | quote }}
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: istio-ingress-tls
+    hosts:
+    - {{ .Values.hostname | quote }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ print .Values.hostname "-vs" | replace "." "-" }}
+spec:
+  hosts:
+  - {{ .Values.hostname  }}
+  gateways:
+  -  {{ print .Values.hostname "-gw" | replace "." "-" }}
+  http:
+  - route:
+    - destination:
+        host: websocketchat-svc
+        port:
+          number: 8081
+  

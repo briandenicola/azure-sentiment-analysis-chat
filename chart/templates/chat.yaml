@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: websocketchatwithsentiment
+  name: app-81e86b-chat
 spec:
   selector:
     matchLabels:
-        app: websocketchat
-        lang: golang
+      app: app-81e86b-chat
+      lang: golang
   replicas: {{ .Values.chat_replicas }} 
   strategy:
     type: RollingUpdate
@@ -17,16 +17,15 @@ spec:
   template:
     metadata:
       labels:
-        app: websocketchat
+        app: app-81e86b-chat
         lang: golang
     spec:
       containers:
       - name: chatws
-        image: {{ .Values.chat_image }}:{{ .Values.chat_image_version }} 
-        imagePullPolicy: Always
+        image: {{ print .Values.chat_image ":" .Values.chat_image_version | nospace  }} 
         env:
         - name: COGSURL
-          value: {{ .Values.sentimentapi_uri}} 
+          value: {{ .Values.sentimentapi_uri }}
         ports:
         - containerPort: 8081
         resources:

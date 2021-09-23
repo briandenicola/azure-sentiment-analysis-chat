@@ -18,6 +18,7 @@ spec:
     metadata:
       labels:
         app: azuresentimentanalysis
+        aadpodidbinding: {{ .Values.pod_identity }}
     spec:
       containers:
       - name: azuresentimentanalysis
@@ -32,9 +33,9 @@ spec:
           value: {{ .Values.sentimentapi_billing_uri }} 
         - name: ApiKey
           valueFrom:
-            configMapKeyRef:
-              name: chatsvcmap
-              key: cogsApiKey      
+            secretKeyRef:
+              name: app-81e86b-secrets
+              key: cogskey
         resources:
           requests:
             memory: "1Gi"
