@@ -7,7 +7,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-        app: azuresentimentanalysis
+      app: azuresentimentanalysis
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -34,7 +34,7 @@ spec:
         - name: ApiKey
           valueFrom:
             secretKeyRef:
-              name: app-81e86b-secrets
+              name: {{ .Values.k8s_secret_name }}
               key: cogskey
         resources:
           requests:
