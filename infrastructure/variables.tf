@@ -14,4 +14,3 @@ variable "resource_group_name" {
 variable "environment" {
   description = "The environment this cluster is"
 }
-==
