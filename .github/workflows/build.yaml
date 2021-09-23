@@ -1,0 +1,44 @@
+name: Builds code for proejct
+on:
+  workflow_dispatch:
+    inputs:
+      tags:
+        description:  Builds code for proejct
+
+jobs:
+  deploy:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    env:
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ACR_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        STORAGE_ACCESS_KEY: ${{ secrets.storage_access_key }}
+        dockerid:   'bjd145'
+        imageName:  'bjd145/chatws:${{ env.GITHUB_SHA }}'
+    
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@master
+
+    - name: "Build code"
+      shell: bash
+      working-directory: './src'
+      run: |
+        docker build -t ${{ env.imageName }} .
+        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ env.dockerid }}  --password-stdin
+        docker push ${{ env.imageName}}
+
+    - name: "Log into Azure"
+      uses: Azure/login@v1.1
+      with:
+        creds: '{"clientId":"${{ env.ARM_CLIENT_ID }}","clientSecret":"${{ env.ARM_CLIENT_SECRET }}","subscriptionId":"${{ env.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ env.ARM_TENANT_ID }}"}'
+
+    - name: "Publish Helm Chart"
+      shell: bash
+      working-directory: './chart'
+      run: |
+        helm package . 
+        package=`ls sentiment*.tgz`
+        az acr helm push -n ${{ env.dockerid }} ${package} --force
