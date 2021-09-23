@@ -9,6 +9,7 @@ resource "azurerm_key_vault" "app" {
   sku_name = "standard"
 
   network_acls {
+    bypass         = "AzureServices" 
     default_action = "Allow"
   }
 
