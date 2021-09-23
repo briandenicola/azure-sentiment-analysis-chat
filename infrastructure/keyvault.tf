@@ -8,6 +8,10 @@ resource "azurerm_key_vault" "app" {
 
   sku_name = "standard"
 
+  network_acls {
+    default_action = "Allow"
+  }
+
   access_policy {
     tenant_id = data.azurerm_client_config.current.tenant_id
     object_id = azurerm_user_assigned_identity.app_identity.principal_id 
