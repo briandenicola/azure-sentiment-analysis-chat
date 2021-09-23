@@ -26,11 +26,3 @@ variable "app_vnet" {
 variable "dns_resource_group_name" {
   description = "The Resource Group name that contains Private DNS Zones"
 }
-
-variable "github_actions_identity_name" {
-  description = "The name of the Github Task runner Managed Identity"
-}
-
-variable "github_actions_identity_resource_group" {
-  description = "The Resource Group name that Github Taskrunner Identity"
-}
