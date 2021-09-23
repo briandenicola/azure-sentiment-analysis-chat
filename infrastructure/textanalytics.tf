@@ -4,7 +4,7 @@ resource "azurerm_cognitive_account" "app" {
   location            = azurerm_resource_group.app.location
   kind                = "TextAnalytics"
 
-  sku_name            = "S0"
+  sku_name            = "F0"
 }
 
 resource "azurerm_key_vault_secret" "azurerm_cognitive_account_key" {
