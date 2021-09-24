@@ -1,0 +1,16 @@
+apiVersion: aadpodidentity.k8s.io/v1
+kind: AzureIdentityBinding
+metadata:
+  name: {{ print .Values.pod_identity "-binding" }}
+spec:
+  azureIdentity: {{ .Values.pod_identity }}
+  selector: 
+---
+apiVersion: aadpodidentity.k8s.io/v1
+kind: AzureIdentity
+metadata:
+  name: {{ .Values.pod_identity }}  
+spec:
+  type: 0
+  clientID: {{ .Values.pod_client_id }}
+  resourceID: {{ .Values.pod_resource_id }}

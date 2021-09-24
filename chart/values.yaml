@@ -8,7 +8,10 @@ sentimentapi_billing_uri: https://centralus.api.cognitive.microsoft.com/
 k8s_secret_name: 'app-81e86b-secrets'
 
 keyvault_name: ''
-pod_identity: ''
 tenant_id: ''
 hostname: ''
 keyvault_secret_name: ''
+
+pod_identity: ''
+pod_client_id: ''
+pod_resource_id: ''
