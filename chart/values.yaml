@@ -3,7 +3,7 @@ chat_image_version: 1008
 chat_replicas: 1 
 
 sentimentapi_uri: http://acs:5000/text/analytics/v3.0/sentiment
-sentimentapi_billing_uri: https://centralus.api.cognitive.microsoft.com/
+sentimentapi_billing_uri: https://centralus.api.cognitive.microsoft.com
 
 k8s_secret_name: 'app-81e86b-secrets'
 
