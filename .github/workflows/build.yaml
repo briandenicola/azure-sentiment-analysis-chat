@@ -16,7 +16,7 @@ jobs:
         ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
         STORAGE_ACCESS_KEY: ${{ secrets.storage_access_key }}
         dockerid:   'bjd145'
-        imageName:  'bjd145/chatws:${{ env.GITHUB_SHA }}'
+        BASE_IMAGE_NAME: 'bjd145/chatws'
     
     steps:
     - name: "Checkout"
@@ -26,9 +26,11 @@ jobs:
       shell: bash
       working-directory: './src'
       run: |
-        docker build -t ${{ env.imageName }} .
+        DOCKER_IMAGE=${{ env.BASE_IMAGE_NAME }} ":" ${{ env.GITHUB_SHA }}
+        echo ${DOCKER_IMAGE}
+        docker build -t ${DOCKER_IMAGE}.
         echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ env.dockerid }}  --password-stdin
-        docker push ${{ env.imageName}}
+        docker push ${DOCKER_IMAGE}
 
     - name: "Log into Azure"
       uses: Azure/login@v1.1
