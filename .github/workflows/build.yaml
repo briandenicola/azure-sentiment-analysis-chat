@@ -26,5 +26,5 @@ jobs:
       shell: bash
       working-directory: './src'
       run: |
-        export DOCKER_IMAGE=${{ env.BASE_IMAGE_NAME }} ":" ${GITHUB_SHA}
+        export DOCKER_IMAGE=${{ env.BASE_IMAGE_NAME }}:${GITHUB_SHA}
         echo ${DOCKER_IMAGE}
