@@ -1,2 +1,2 @@
-app_name = "app-81e86b"
+app_name = "chat-81e86b"
 environment = "uat"
