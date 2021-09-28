@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-81e86b-chat
+  name: {{ .Values.app_name }}
 spec:
   selector:
     matchLabels:
-      app: app-81e86b-chat
+      app: {{ .Values.app_name }}
       lang: golang
   replicas: {{ .Values.chat_replicas }} 
   strategy:
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        app: app-81e86b-chat
+        app: {{ .Values.app_name }}
         lang: golang
     spec:
       containers:
