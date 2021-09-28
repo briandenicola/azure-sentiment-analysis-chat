@@ -26,10 +26,9 @@ jobs:
       shell: bash
       working-directory: './src'
       run: |
-        export GITHUB_SHA_SHORT=${GITHUB_SHA} | cut -c1-8
-        export DOCKER_IMAGE=${{ env.BASE_IMAGE_NAME }}:${GITHUB_SHA_SHORT}
+        export DOCKER_IMAGE=${{ env.BASE_IMAGE_NAME }}:${GITHUB_SHA}
       
-        docker login -u ${{ env.dockerid }} -p ${{ secrets.DOCKER_PASSWORD }} 
+        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ env.dockerid }}  --password-stdin
         docker build -t ${DOCKER_IMAGE} .
         docker push ${DOCKER_IMAGE}
 
