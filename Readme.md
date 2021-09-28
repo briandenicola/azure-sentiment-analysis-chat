@@ -43,4 +43,4 @@ This demo uses the Azure Cognitive Services [container deployment](https://docs.
 
 ## GitOps
 1. The [repository](https://github.com/briandenicola/kubernetes-cluster-setup) is configured to deploy this application via flux
-2. Update [this] https://github.com/briandenicola/kubernetes-cluster-setup/blob/master/cluster-manifests/uat/app-81e86b.yaml) yaml to the correct ${VERSION}
+2. Update [this](https://github.com/briandenicola/kubernetes-cluster-setup/blob/master/cluster-manifests/uat/app-81e86b.yaml) yaml to the correct ${VERSION}
