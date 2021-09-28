@@ -28,7 +28,7 @@ jobs:
       run: |
         DOCKER_IMAGE=${{ env.BASE_IMAGE_NAME }} ":" ${{ env.GITHUB_SHA }}
         echo ${DOCKER_IMAGE}
-        docker build -t ${DOCKER_IMAGE}.
+        docker build -t ${DOCKER_IMAGE} .
         echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ env.dockerid }}  --password-stdin
         docker push ${DOCKER_IMAGE}
 
