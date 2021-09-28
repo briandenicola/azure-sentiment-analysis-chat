@@ -26,5 +26,22 @@ jobs:
       shell: bash
       working-directory: './src'
       run: |
-        export DOCKER_IMAGE=${{ env.BASE_IMAGE_NAME }}:${GITHUB_SHA}
-        echo ${DOCKER_IMAGE}
+        export GITHUB_SHA_SHORT=${GITHUB_SHA} | cut -c1-8
+        export DOCKER_IMAGE=${{ env.BASE_IMAGE_NAME }}:${GITHUB_SHA_SHORT}
+      
+        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ env.dockerid }}  --password-stdin
+        docker build -t ${DOCKER_IMAGE} .
+        docker push ${DOCKER_IMAGE}
+
+    - name: "Log into Azure"
+      uses: Azure/login@v1.1
+      with:
+        creds: '{"clientId":"${{ env.ARM_CLIENT_ID }}","clientSecret":"${{ env.ARM_CLIENT_SECRET }}","subscriptionId":"${{ env.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ env.ARM_TENANT_ID }}"}'
+
+    - name: "Publish Helm Chart"
+      shell: bash
+      working-directory: './chart'
+      run: |
+        helm package . 
+        package=`ls sentiment*.tgz`
+        az acr helm push -n ${{ env.dockerid }} ${package} --force
