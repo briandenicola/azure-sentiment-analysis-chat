@@ -7,11 +7,10 @@ app_name: chat-81e86b
 sentimentapi_uri: http://acs:5000/text/analytics/v3.0/sentiment
 sentimentapi_billing_uri: https://centralus.api.cognitive.microsoft.com
 
-k8s_secret_name: 'app-81e86b-secrets'
+k8s_secret_name: 'chat-81e86b-secrets'
 
 keyvault_name: ''
-tenant_id: ''
-hostname: ''
 keyvault_secret_name: ''
-
+hostname: ''
+tenant_id: ''
 pod_identity: ''
