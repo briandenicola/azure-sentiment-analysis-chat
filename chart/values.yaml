@@ -15,5 +15,3 @@ hostname: ''
 keyvault_secret_name: ''
 
 pod_identity: ''
-pod_client_id: ''
-pod_resource_id: ''
