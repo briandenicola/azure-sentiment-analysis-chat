@@ -16,8 +16,6 @@ spec:
   minReadySeconds: 5
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/inject: "false"
       labels:
         app: {{ .Values.app_name }}
         lang: golang
