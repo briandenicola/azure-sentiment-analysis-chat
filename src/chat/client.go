@@ -39,6 +39,7 @@ type sentimentScore struct {
 	Id string 
 	Sentiment string
 }
+
 type sentimentReply struct {
 	Documents []sentimentScore
 }
@@ -71,6 +72,7 @@ func (c *Client) getSentiment( msg []byte ) (string,error) {
 	err = json.Unmarshal(resp.Body(), &sr)
 	if err != nil {
 		log.Printf("Error unmarshalling of sentiment reply - %v", err)
+		log.Printf("Body reply %v", resp.Body())
 		return "neutral", err
 	}
 	return sr.Documents[0].Sentiment, nil
