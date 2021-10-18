@@ -6,7 +6,7 @@ spec:
   hosts:
   - {{ .Values.hostname  }}
   gateways:
-  -  {{ print .Values.hostname "-gw" | replace "." "-" }}
+  -  {{ .Values.istio_gateway }}
   http:
   - route:
     - destination:

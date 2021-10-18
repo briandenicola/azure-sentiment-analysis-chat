@@ -14,3 +14,5 @@ keyvault_secret_name: ''
 hostname: ''
 tenant_id: ''
 pod_identity: ''
+
+istio_gateway: 'default-bjdazure-tech-gw'
