@@ -1,6 +1,6 @@
 terraform {
   backend "azurerm" {
-    storage_account_name = "bjdterraform001"
+    storage_account_name = "bjdterraform003"
     container_name       = "plans"
   }
 }
