@@ -17,24 +17,28 @@ This demo uses the Azure Cognitive Services [container deployment](https://docs.
 * Excute .github/workflows/infrastructure.yaml
 
 ## Manual
-1. cd infrastructure
-2. terraform init -backend=true -backend-config="access_key=WY4ruq........" -backend-config="key=app.terraform.tfstate"
-3. terraform plan -out="uat.plan" -var "resource_group_name=DevSub02_ChatApp_RG" -var-file="uat.tfvars"
-4. terraform apply "uat.plan"
+```bash
+    cd infrastructure
+    terraform init -backend=true -backend-config="access_key=WY4ruq........" -backend-config="key=app.terraform.tfstate"
+    terraform plan -out="uat.plan" -var "resource_group_name=DevSub02_ChatApp_RG" -var-file="uat.tfvars"
+    terraform apply "uat.plan"
+```
 
 # Code Build
 ## Local
-1. Set your GOPATH 
-2. go get github.com/gorilla/websocket
-3. go get github.com/gin-contrib/cors
-4. go get github.com/gin-gonic/gin
-5. go get github.com/gin-gonic/contrib/static
-6. go get gopkg.in/resty.v1
-7. cd ./src
-8. docker build -t chatw
-9. cd ./chart
-10. helm package .
-11. az acr helm push -n ${ACR_NAME} sentimentchat-0.2.${VERAION}.tgz --force
+```bash
+    #Set your GOPATH 
+    go get github.com/gorilla/websocket
+    go get github.com/gin-contrib/cors
+    go get github.com/gin-gonic/gin
+    go get github.com/gin-gonic/contrib/static
+    go get gopkg.in/resty.v1
+    cd ./src
+    docker build -t chatw
+    cd ./chart
+    helm package .
+    az acr helm push -n ${ACR_NAME} sentimentchat-0.2.${VERAION}.tgz --force
+```
 
 ## GitHub Actions
 * Excute .github/workflows/build.yaml
@@ -43,4 +47,3 @@ This demo uses the Azure Cognitive Services [container deployment](https://docs.
 
 ## GitOps
 1. The [repository](https://github.com/briandenicola/kubernetes-cluster-setup) is configured to deploy this application via flux
-2. Update [this](https://github.com/briandenicola/kubernetes-cluster-setup/blob/master/cluster-manifests/uat/app-81e86b.yaml) yaml to the correct ${VERSION}
